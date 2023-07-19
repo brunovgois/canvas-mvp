@@ -1,30 +1,37 @@
 import { useCallback, useEffect, useRef } from "react"
 
-export const UseOnMouseDraw = () => {
+type UseOnMouseDrawProps = (
+  ctx: CanvasRenderingContext2D | null | undefined,
+  pos: { x: number; y: number } | null
+) => void;
+
+export const UseOnMouseDraw = (onDraw: UseOnMouseDrawProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const isDrawingRef = useRef(false)
 
   const mouseMoveListenerRef = useRef<EventListener | null>(null)
-
   const mouseUpListenerRef = useRef<EventListener | null>(null)
 
-  const initMouseMoveListener = useCallback(() => {
-    const mouseMoveListener: EventListener = (e: Event) => {
-      if (e instanceof MouseEvent) {
-        const point = computePointInCanvas(e.clientX, e.clientY)
-        console.log(point)
-      }
-    }
-    mouseMoveListenerRef.current = mouseMoveListener
-
-    window.addEventListener("mousemove", mouseMoveListener)
-  }, [])
-
   useEffect(() => {
+    function initMouseMoveListener() {
+      const mouseMoveListener: EventListener = (e: Event) => {
+        if (e instanceof MouseEvent && isDrawingRef.current) {
+          const point = computePointInCanvas(e.clientX, e.clientY)
+          const ctx = canvasRef.current?.getContext("2d")
+          if (ctx) {
+            onDraw(ctx, point)
+          }
+        }
+      }
+      mouseMoveListenerRef.current = mouseMoveListener
+      window.addEventListener("mousemove", mouseMoveListener)
+    }
+
     initMouseMoveListener()
     return () => {
       removeListeners()
     }
-  }, [initMouseMoveListener])
+  }, [onDraw])
 
   function setCanvasRef(ref: HTMLCanvasElement) {
     canvasRef.current = ref
@@ -40,7 +47,7 @@ export const UseOnMouseDraw = () => {
   }
 
   function onMouseDown() {
-    //todo 
+    isDrawingRef.current = true
   }
 
   function computePointInCanvas(clientX: number, clientY: number) {
@@ -55,5 +62,5 @@ export const UseOnMouseDraw = () => {
   }
 
 
-  return setCanvasRef
+  return { setCanvasRef, onMouseDown }
 }
