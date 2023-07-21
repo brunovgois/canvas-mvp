@@ -9,21 +9,21 @@ const Home = () => {
 
   return (
     <main className={`flex flex-col min-h-screen items-center p-24 gap-4`}>
-      <h1>Generate an Image with your drawing!</h1>
+      <h1 className="font-sans">Generate an image with your drawing!</h1>
 
       <div className="flex justify-around w-full">
         <div className="flex gap-4">
           <Canvas height={500} width={500} />
           <button
             disabled={isLoading}
-            className="bg-red-200 h-fit self-center p-3 rounded-md text-white"
+            className="bg-red-200 font-sans h-fit self-center p-3 rounded-md text-white"
             onClick={() => fetchImage("https://random.imagecdn.app/500/500")}
           >
             Generate
           </button>
         </div>
 
-        <div className="w-[500px] h-[500px] border border-red-200 flex flex-col justify-center ">
+        <div className="w-[500px] h-[500px] flex flex-col justify-center ">
           {isLoading ? (
             <CircleLoading className="h-4 w-4 animate-spin text-pink-400 mx-auto" />
           ) : data ? (
@@ -33,7 +33,8 @@ const Home = () => {
               width={500}
               height={500}
             />
-          ) : null} {/* TODO: couldn't make request - Error message */}
+          ) : null}
+          {/* TODO: couldn't make request -> Show Error message */}
         </div>
       </div>
     </main>
