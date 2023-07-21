@@ -1,4 +1,4 @@
-import { useOnMouseDraw } from "@/hooks/useOnMouseDraw";
+import { useOnMouseDraw, point } from "@/hooks/useOnMouseDraw";
 
 type CanvasProps = {
   width: number | string;
@@ -9,13 +9,17 @@ export const Canvas = ({ width, height }: CanvasProps) => {
 
   function onDraw(
     ctx: CanvasRenderingContext2D | null | undefined,
-    point: { x: number; y: number } | null
+    point: point,
+    prevPoint: point
   ) {
     if (ctx && point) {
-      ctx.fillStyle = "#000000";
+      prevPoint = prevPoint ?? point;
       ctx.beginPath();
-      ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI);
-      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "#000000";
+      ctx.moveTo(prevPoint.x, prevPoint.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
     }
   }
 

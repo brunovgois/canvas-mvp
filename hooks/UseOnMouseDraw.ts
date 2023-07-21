@@ -1,13 +1,19 @@
 import { useEffect, useRef } from "react"
 
+export type point = {
+  x: number; y: number
+} | null
+
 type UseOnMouseDrawProps = (
   ctx: CanvasRenderingContext2D | null | undefined,
-  pos: { x: number; y: number } | null
+  point: point,
+  prevPoint: point
 ) => void;
 
 export const useOnMouseDraw = (onDraw: UseOnMouseDrawProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const isDrawingRef = useRef(false)
+  const prevPointRef = useRef<point>(null)
 
   const mouseMoveListenerRef = useRef<EventListener | null>(null)
   const mouseUpListenerRef = useRef<EventListener | null>(null)
@@ -19,7 +25,8 @@ export const useOnMouseDraw = (onDraw: UseOnMouseDrawProps) => {
           const point = computePointInCanvas(e.clientX, e.clientY)
           const ctx = canvasRef.current?.getContext("2d")
           if (ctx) {
-            onDraw(ctx, point)
+            onDraw(ctx, point, prevPointRef.current)
+            prevPointRef.current = point
           }
         }
       }
@@ -30,6 +37,7 @@ export const useOnMouseDraw = (onDraw: UseOnMouseDrawProps) => {
     function initMouseUpListener() {
       const mouseUpListener = () => {
         isDrawingRef.current = false
+        prevPointRef.current = null
       };
       mouseUpListenerRef.current = mouseUpListener
       window.addEventListener("mouseup", mouseUpListener)
