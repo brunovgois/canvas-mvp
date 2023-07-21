@@ -5,7 +5,7 @@ type UseOnMouseDrawProps = (
   pos: { x: number; y: number } | null
 ) => void;
 
-export const UseOnMouseDraw = (onDraw: UseOnMouseDrawProps) => {
+export const useOnMouseDraw = (onDraw: UseOnMouseDrawProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const isDrawingRef = useRef(false)
 
