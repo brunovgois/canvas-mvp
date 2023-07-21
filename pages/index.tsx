@@ -21,7 +21,7 @@ const Home = () => {
           >
             Generate
           </button>
-        </div>
+        
 
         <div className="w-[500px] h-[500px] flex flex-col justify-center ">
           {isLoading ? (
@@ -35,6 +35,7 @@ const Home = () => {
             />
           ) : null}
           {/* TODO: couldn't make request -> Show Error message */}
+        </div>
         </div>
       </div>
     </main>
