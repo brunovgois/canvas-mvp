@@ -1,15 +1,15 @@
-import { UseOnMouseDraw } from "@/hooks/useOnMouseDraw";
+import { useOnMouseDraw } from "@/hooks/useOnMouseDraw";
 
 type CanvasProps = {
   width: number | string;
   height: number | string;
 };
 export const Canvas = ({ width, height }: CanvasProps) => {
-  const { setCanvasRef, onMouseDown } = UseOnMouseDraw(onDraw);
+  const { setCanvasRef, onMouseDown } = useOnMouseDraw(onDraw);
 
   function onDraw(
     ctx: CanvasRenderingContext2D | null | undefined,
-    point: { x: number; y: number; } | null
+    point: { x: number; y: number } | null
   ) {
     if (ctx && point) {
       ctx.fillStyle = "#000000";
