@@ -5,7 +5,7 @@ import CircleLoading from "@/assets/CircleLoading";
 import Image from "next/image";
 
 const Home = () => {
-  const { data, isLoading, fetchImage } = useFetchData({ timeoutTime: 0 });
+  const { data, isLoading, fetchImage } = useFetchData(5000);
 
   return (
     <main className={`flex flex-col min-h-screen items-center p-24 gap-4`}>
@@ -15,7 +15,8 @@ const Home = () => {
         <div className="flex gap-4">
           <Canvas height={500} width={500} />
           <button
-            className="bg-red-200 h-fit self-center p-3 rounded-md"
+            disabled={isLoading}
+            className="bg-red-200 h-fit self-center p-3 rounded-md text-white"
             onClick={() => fetchImage("https://random.imagecdn.app/500/500")}
           >
             Generate
@@ -32,11 +33,7 @@ const Home = () => {
               width={500}
               height={500}
             />
-          ) : (
-            <p className="mx-auto">
-              There was a problem generating the image, please try again later.{" "}
-            </p>
-          )}
+          ) : null} {/* TODO: couldn't make request - Error message */}
         </div>
       </div>
     </main>
