@@ -1,4 +1,5 @@
 import { useOnMouseDraw, point } from "@/hooks/useOnMouseDraw";
+import { ChangeEvent, useState } from "react";
 
 type CanvasProps = {
   width: number | string;
@@ -6,6 +7,8 @@ type CanvasProps = {
 };
 export const Canvas = ({ width, height }: CanvasProps) => {
   const { setCanvasRef, onMouseDown } = useOnMouseDraw(onDraw);
+
+  const [lineWidth, setLineWidth] = useState(4);
 
   function onDraw(
     ctx: CanvasRenderingContext2D | null | undefined,
@@ -15,7 +18,7 @@ export const Canvas = ({ width, height }: CanvasProps) => {
     if (ctx && point) {
       prevPoint = prevPoint ?? point;
       ctx.beginPath();
-      ctx.lineWidth = 4;
+      ctx.lineWidth = lineWidth;
       ctx.strokeStyle = "#000000";
       ctx.moveTo(prevPoint.x, prevPoint.y);
       ctx.lineTo(point.x, point.y);
@@ -24,12 +27,26 @@ export const Canvas = ({ width, height }: CanvasProps) => {
   }
 
   return (
-    <canvas
-      className="border border-red-100"
-      width={width}
-      height={height}
-      ref={setCanvasRef}
-      onMouseDown={onMouseDown}
-    />
+    <div className="flex flex-col">
+      <canvas
+        className="border border-red-100"
+        width={width}
+        height={height}
+        ref={setCanvasRef}
+        onMouseDown={onMouseDown}
+      />
+      <div>
+        <input
+          type="range"
+          min="4"
+          max="20"
+          className="accent-red-500"
+          value={lineWidth}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setLineWidth(parseInt(e.target.value))
+          }
+        />
+      </div>
+    </div>
   );
 };
