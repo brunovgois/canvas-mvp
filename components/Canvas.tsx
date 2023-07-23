@@ -8,7 +8,7 @@ type CanvasProps = {
 export const Canvas = ({ width, height }: CanvasProps) => {
   const { setCanvasRef, onMouseDown } = useOnMouseDraw(onDraw);
 
-  const [lineWidth, setLineWidth] = useState(4);
+  const [lineWidth, setLineWidth] = useState(1);
 
   function onDraw(
     ctx: CanvasRenderingContext2D | null | undefined,
@@ -35,10 +35,10 @@ export const Canvas = ({ width, height }: CanvasProps) => {
         ref={setCanvasRef}
         onMouseDown={onMouseDown}
       />
-      <div>
+      <div className="flex">
         <input
           type="range"
-          min="4"
+          min="1"
           max="20"
           className="accent-red-500"
           value={lineWidth}
