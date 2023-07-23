@@ -5,7 +5,7 @@ import CircleLoading from "@/assets/CircleLoading";
 import Image from "next/image";
 
 const Home = () => {
-  const { data, isLoading, fetchImage } = useFetchData(5000);
+  const { data, isLoading, isError, fetchImage } = useFetchData(5000);
 
   return (
     <main className={`flex flex-col min-h-screen items-center p-24 gap-4`}>
@@ -25,7 +25,7 @@ const Home = () => {
           <div className="w-[500px] h-[500px] flex flex-col justify-center">
             {isLoading ? (
               <CircleLoading className="h-4 w-4 animate-spin text-pink-400 mx-auto" />
-            ) : data ? (
+            ) : data && !isError ? (
               <Image
                 src={data}
                 alt="Image generated from the drawing on the Canvas "
@@ -33,7 +33,6 @@ const Home = () => {
                 height={500}
               />
             ) : null}
-            {/* TODO: couldn't make request -> Show Error message */}
           </div>
         </div>
       </div>

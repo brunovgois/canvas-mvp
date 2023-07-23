@@ -3,6 +3,7 @@ import { useState } from "react";
 const useFetchData = (timeoutTime?: number) => {
   const [data, setData] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false)
 
   const fetchImage = (url: string) => {
     setIsLoading(true)
@@ -21,11 +22,12 @@ const useFetchData = (timeoutTime?: number) => {
       } catch (error) {
         console.error('Error fetching image:', error);
         setIsLoading(false)
+        setIsError(true)
       }
     }, timeoutTime ?? 0)
   };
 
-  return { data, isLoading, fetchImage };
+  return { data, isLoading, isError, fetchImage };
 }
 
 export default useFetchData
