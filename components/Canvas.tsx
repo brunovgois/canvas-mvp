@@ -23,6 +23,11 @@ export const Canvas = ({ width, height }: CanvasProps) => {
       ctx.moveTo(prevPoint.x, prevPoint.y);
       ctx.lineTo(point.x, point.y);
       ctx.stroke();
+
+      ctx.fillStyle = "#000000";
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, lineWidth/2, 0, 2 * Math.PI);
+      ctx.fill();
     }
   }
 
