@@ -1,5 +1,6 @@
 import { useOnMouseDraw, point } from "@/hooks/useOnMouseDraw";
 import { ChangeEvent, useState } from "react";
+import { HexColorPicker } from "react-colorful";
 
 type CanvasProps = {
   width: number | string;
@@ -7,8 +8,8 @@ type CanvasProps = {
 };
 export const Canvas = ({ width, height }: CanvasProps) => {
   const { setCanvasRef, onMouseDown } = useOnMouseDraw(onDraw);
-
-  const [lineWidth, setLineWidth] = useState(1);
+  const [color, setColor] = useState("#000000");
+  const [lineWidth, setLineWidth] = useState(4);
 
   function onDraw(
     ctx: CanvasRenderingContext2D | null | undefined,
@@ -19,14 +20,14 @@ export const Canvas = ({ width, height }: CanvasProps) => {
       prevPoint = prevPoint ?? point;
       ctx.beginPath();
       ctx.lineWidth = lineWidth;
-      ctx.strokeStyle = "#000000";
+      ctx.strokeStyle = color;
       ctx.moveTo(prevPoint.x, prevPoint.y);
       ctx.lineTo(point.x, point.y);
       ctx.stroke();
 
-      ctx.fillStyle = "#000000";
+      ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(point.x, point.y, lineWidth/2, 0, 2 * Math.PI);
+      ctx.arc(point.x, point.y, lineWidth / 2, 0, 2 * Math.PI);
       ctx.fill();
     }
   }
@@ -34,23 +35,24 @@ export const Canvas = ({ width, height }: CanvasProps) => {
   return (
     <div className="flex flex-col">
       <canvas
-        className="border border-red-100"
+        className="border border-orange-100 bg-white"
         width={width}
         height={height}
         ref={setCanvasRef}
         onMouseDown={onMouseDown}
       />
-      <div className="flex">
+      <div className="flex justify-around mt-2">
         <input
           type="range"
           min="1"
           max="20"
-          className="accent-red-500"
+          className="accent-black self-start"
           value={lineWidth}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setLineWidth(parseInt(e.target.value))
           }
         />
+        <HexColorPicker color={color} onChange={setColor} />
       </div>
     </div>
   );
